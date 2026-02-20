@@ -1,2 +1,4 @@
 qiskit
 gradio
+pillow
+numpy
