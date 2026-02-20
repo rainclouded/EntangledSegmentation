@@ -78,3 +78,4 @@ def test_image():
     x_conv, y_conv, grey_norm = sobel_convolve(grey_image)
     final_edge_detection = test_full_image(x_conv, y_conv, grey_norm)
     Image.fromarray((final_edge_detection*255).astype(np.uint8), 'L').save('quantum_edges.png')
+test_image()
