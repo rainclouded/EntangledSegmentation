@@ -3,6 +3,8 @@ import numpy as np
 import pennylane as qml
 side_length = 512
 dev = qml.device('default.qubit', wires = 3)
+
+
 def resize_image(image_name):
      # We cant have too large an image for now
     resized  = ImageOps.cover(image_name, side_length, (0.5, 0.5))
@@ -65,6 +67,14 @@ def test_full_image(x_convolved, y_convolved, grey_normalized):
             x_angle = x_convolved[x][y]
             y_angle = y_convolved[x][y]
             grey_angle = grey_normalized[x][y]
-            edge_image[x][y] = test_pixel(x_angle, y_angle, grey_angle)
+            edge_image[x][y] = 1 if test_pixel(x_angle, y_angle, grey_angle) > 0.5 else 0
+    return edge_image
 
-
+def test_image():
+    resized = None
+    with Image.open('./test_files/test_image.png') as img:
+        resized = resize_image(img)
+    grey_image = convert_greybits(resized)
+    x_conv, y_conv, grey_norm = sobel_convolve(grey_image)
+    final_edge_detection = test_full_image(x_conv, y_conv, grey_norm)
+    Image.fromarray((final_edge_detection*255).astype(np.uint8), 'L').save('quantum_edges.png')
