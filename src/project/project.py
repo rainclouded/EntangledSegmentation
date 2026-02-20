@@ -68,25 +68,3 @@ def test_full_image(x_convolved, y_convolved, grey_normalized):
             edge_image[x][y] = test_pixel(x_angle, y_angle, grey_angle)
 
 
-# This will likely get removed, unless I switch to other algorithm            
-def collapse_edges(convolved:np.array):
-    edge_image = np.zeroes(side_length,side_length)
-    threshold = .5 # to be updated, but what should be edge or background
-    for x in range(side_length):
-        for y in range(side_length):
-            edge_image[x][y] = 0 if convolved[x][y] > threshold else 1
-    return edge_image
-
-def int_to_greycode(value):
-    # use grey code because values differ by a single but flip
-    # since this will be simulated, not an actual requirement...
-    return np.unpackbits(value ^ (value << 1)) # this is a neat hack!
-    
-
-def convert_to_angle(edge_image:np.array):
-    angles = edge_image.flatten() * np.pi # we want to start with either Pi or 0
-    # This will be for Pauli Z rotation
-
-def get_pixel(row,col, pixel_angles):
-    selected_angle = int_to_greycode(row) + int_to_greycode(col) + [pixel_angles[row * side_length + col]]
-
