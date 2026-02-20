@@ -1,7 +1,8 @@
 from PIL import Image, ImageOps
 import numpy as np
+import pennylane as qml
 side_length = 512
-
+dev = qml.device('default.qubit', wires = 3)
 def resize_image(image_name):
      # We cant have too large an image for now
     resized  = ImageOps.cover(image_name, side_length, (0.5, 0.5))
@@ -40,7 +41,34 @@ def sobel_convolve(grey_image:np.array):
             y_convolved[x][y] = 2 * (y_conv / max(abs(y_conv))) - 1
             grey_normalized[x][y] = 2 * (grey_image / 255) - 1
     return (x_convolved, y_convolved, grey_normalized)
-            
+
+@qml.qnode(device = dev)
+def test_pixel(x_angle, y_angle, grey_angle):
+    # This is how to determne if its foreground or background
+
+    # encode in qubit here:
+    
+    qml.RY(x_angle, wires = 0)
+    qml.RY(y_angle, wires = 1)
+    qml.RY(grey_angle, wires = 2)
+
+    coeffs = [1,1,1]
+    obs = [qml.RX(0), qml.RY(1), qml.RZ(2)]
+    H = qml.Hamiltonian(coeffs, obs)
+    return qml.expval(H)
+
+
+def test_full_image(x_convolved, y_convolved, grey_normalized):
+    edge_image = np.zeroes(side_length, side_length)
+    for x in range(side_length):
+        for y in range(side_length):
+            x_angle = x_convolved[x][y]
+            y_angle = y_convolved[x][y]
+            grey_angle = grey_normalized[x][y]
+            edge_image[x][y] = test_pixel(x_angle, y_angle, grey_angle)
+
+
+# This will likely get removed, unless I switch to other algorithm            
 def collapse_edges(convolved:np.array):
     edge_image = np.zeroes(side_length,side_length)
     threshold = .5 # to be updated, but what should be edge or background

@@ -2,3 +2,4 @@ qiskit
 gradio
 pillow
 numpy
+pennylane
