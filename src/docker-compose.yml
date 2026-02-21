@@ -20,4 +20,8 @@ services:
     environment:
       - GRADIO_SERVER_NAME=0.0.0.0
       - GRADIO_SHARE=False
+    deploy:
+      resources:
+        limits:
+          cpus: "8.0"
     restart: unless-stopped

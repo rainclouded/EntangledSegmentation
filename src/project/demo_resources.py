@@ -39,6 +39,8 @@ Each of the urronding qubits are weighted based on their values.
 
 (This was a fun try, but it did not work.)
 
+*Update:* it is working to an extent.
+
 These were represented as rotations using PauliY gates see the neat demo below.
 """
 # Bloch demo component
