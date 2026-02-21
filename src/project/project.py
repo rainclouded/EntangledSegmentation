@@ -24,14 +24,14 @@ with gr.Blocks() as image_viewer:
                     # removed the live video stream, it was not working right
                 with gr.Column():
                     output_kernel_detected = gr.Image(
-                            label="Quantum Kernel")
+                        label="Quantum Kernel")
 
             with gr.Row():
-                    with gr.Column():
-                        classical_edge = gr.Image(label="Classical Detector")
-                    with gr.Column():
-                        output_edge_detected = gr.Image(
-                            label="Quantum Threshold")
+                with gr.Column():
+                    classical_edge = gr.Image(label="Classical Detector")
+                with gr.Column():
+                    output_edge_detected = gr.Image(
+                        label="Quantum Threshold")
             with gr.Row():
                 with gr.Column():
                     take_screenshot = gr.Button("Classical", variant="primary")
@@ -40,13 +40,15 @@ with gr.Blocks() as image_viewer:
 
             with gr.Row():
                 with gr.Column():
-                    take_screenshot_q1 = gr.Button("Quantum Threshold", variant="primary")
+                    take_screenshot_q1 = gr.Button(
+                        "Quantum Threshold", variant="primary")
             take_screenshot_q1.click(recieve_kernel, input_img, [
-                                  output_edge_detected])
+                output_edge_detected])
             with gr.Column():
-                    take_screenshot_q2 = gr.Button("Quantum Kernel", variant="primary")
+                take_screenshot_q2 = gr.Button(
+                    "Quantum Kernel", variant="primary")
             take_screenshot_q2.click(receive_image, input_img, [
-                                  output_kernel_detected])
+                output_kernel_detected])
 
 if __name__ == "__main__":
 

@@ -49,7 +49,7 @@ def sobel_convolve(grey_image: np.array, side_length):
         grey_image: Grayscale input (side_length, side_length) [0, 255]
         side_length: Image dimension
 
-    Returns:
+    Returns:s
         tuple: (x_convolved, y_convolved, grey_normalized)
             - x_convolved: Horizontal gradients [-1, 1]
             - y_convolved: Vertical gradients [-1, 1]  
@@ -88,8 +88,8 @@ def sobel_convolve(grey_image: np.array, side_length):
 
 
 def quantum_sobel(grey_image, side_length):
-    entangled_coeffs_x = [-1,0,+1,2,0,+2,-1,0,+1]
-    entangled_coeffs_y = [-1,-2,-1,0,0,0,+1,+2,-1]
+    entangled_coeffs_x = [-1,0,+1,-2,0,+2,-1,0,+1]
+    entangled_coeffs_y = [-1,-2,-1,0,0,0,+1,+2,+1]
     convolved = np.zeros((side_length, side_length))
     padded = np.pad(grey_image / 255.0, 1, mode='symmetric')
 
@@ -100,4 +100,12 @@ def quantum_sobel(grey_image, side_length):
             quantum_gy = quantum_kernel(convolve_patch, entangled_coeffs_y)
             convolved[x, y] = np.sqrt(quantum_gx**2 + quantum_gy**2)
 
-    return convolved
+    # Normalize to [0, 255]
+    min_val, max_val = convolved.min(), convolved.max()
+    if max_val > min_val:
+        convolved = (convolved - min_val) / (max_val - min_val) * 255.0
+
+    threshold = 128  
+    binary = np.where(convolved > threshold, 255, 0).astype(np.uint8)
+    return binary
+

@@ -49,8 +49,8 @@ def process_quantum_threshold(grey_image):
 
 
 def process_quantum(grey_image):
-    edge_map = quantum_sobel(grey_image, quantum_side_length)
-    return ((edge_map < 0) * 255).astype(np.uint8)
+    return quantum_sobel(grey_image, quantum_side_length)
+    
 
 def process_classical(resized):
     """Classical Sobel edge detection using  OpenCV.
