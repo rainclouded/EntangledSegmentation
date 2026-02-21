@@ -1,6 +1,8 @@
 from PIL import Image, ImageOps
 import numpy as np
 from quantum_processing import quantum_kernel
+
+
 def resize_image(image_name, side_length):
     """Resize/crop image to square dimensions using PIL ImageOps.cover.
 
@@ -84,13 +86,18 @@ def sobel_convolve(grey_image: np.array, side_length):
 
     return (x_convolved, y_convolved, grey_normalized)
 
+
 def quantum_sobel(grey_image, side_length):
+    entangled_coeffs_x = [-1,0,+1,2,0,+2,-1,0,+1]
+    entangled_coeffs_y = [-1,-2,-1,0,0,0,+1,+2,-1]
     convolved = np.zeros((side_length, side_length))
     padded = np.pad(grey_image / 255.0, 1, mode='symmetric')
-    
+
     for x in range(side_length):
         for y in range(side_length):
             convolve_patch = padded[x:x+3, y:y+3]
-            convolved[x, y] = quantum_kernel(convolve_patch)
-    
+            quantum_gx = quantum_kernel(convolve_patch, entangled_coeffs_x )
+            quantum_gy = quantum_kernel(convolve_patch, entangled_coeffs_y)
+            convolved[x, y] = np.sqrt(quantum_gx**2 + quantum_gy**2)
+
     return convolved

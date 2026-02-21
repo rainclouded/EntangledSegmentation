@@ -8,24 +8,24 @@ H = qml.Hamiltonian(coeffs, obs)
 
 import numpy as np
 dev_entanglement = qml.device('lightning.qubit', wires=9)
-entangled_coeffs_x = [-1,0,+1,2,0,+2,-1,0,+1]
-entangled_coeffs_y = [-1,-2,-1,0,0,0,+1,+2,-1]
+
 
 
 @qml.qnode(dev_entanglement)
-def quantum_kernel(patch):
+def quantum_kernel(patch, coefficients):
     # Encode each pixel like its a sobel kernel
+    
     for i, pixel in enumerate(patch.flatten()):
-        qml.RY((pixel * np.pi/8)*entangled_coeffs_x[i]+
-               (pixel * np.pi/8)*entangled_coeffs_y[i], wires=i) # if its a 1 it rotates by pi
+        qml.RY((pixel * np.pi/8)*coefficients[i], wires=i) # if its a 1 it rotates by pi
     
     # Entangling the qubits
     # Imitating the sobel convolution
-    qml.CNOT(wires=[0,4]); 
+    qml.CNOT(wires=[0,4])
     qml.CNOT(wires=[1,4])
-    qml.CNOT(wires=[3,4]); 
-    qml.CNOT(wires=[4,5])
-    qml.CNOT(wires=[6,7]); 
+    qml.CNOT(wires=[2,4])
+    qml.CNOT(wires=[3,4])
+    qml.CNOT(wires=[5,4])
+    qml.CNOT(wires=[6,4]) 
     qml.CNOT(wires=[7,4])
     qml.CNOT(wires=[8,4])
 
