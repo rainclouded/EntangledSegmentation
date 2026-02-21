@@ -1,5 +1,3 @@
-from PIL import Image
-
 import numpy as np
 import gradio as gr
 from demo_resources import math_text, bloch_demo
@@ -23,7 +21,7 @@ with gr.Blocks() as image_viewer:
                 with gr.Column():
                     input_img = gr.Image(
                         label="Camera", sources="webcam", type="pil")
-                    # I have removed the live video stream, it was not working right
+                    # removed the live video stream, it was not working right
                 with gr.Column():
                     output_kernel_detected = gr.Image(
                             label="Quantum Kernel")
