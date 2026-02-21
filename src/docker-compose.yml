@@ -1,0 +1,23 @@
+services:
+  quantum-edges:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - BUILDKIT_STEP_MEMORY=16g  
+    image: entangled-segment  
+    container_name: edge-detection
+    devices:
+      - /dev/video0:/dev/video0  
+      - /dev/video1:/dev/video1
+    privileged: true
+    ports:
+      - "7860:7860"
+    volumes:
+      - ./test_files:/app/test_files  
+    stdin_open: true
+    tty: true
+    environment:
+      - GRADIO_SERVER_NAME=0.0.0.0
+      - GRADIO_SHARE=False
+    restart: unless-stopped

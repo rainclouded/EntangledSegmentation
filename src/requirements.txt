@@ -1,5 +1,8 @@
-qiskit
-gradio
+gradio==6.6.0
 pillow
 numpy
 pennylane
+opencv-python
+pennylane-lightning
+qiskit
+matplotlib
