@@ -6,3 +6,4 @@ opencv-python
 pennylane-lightning
 qiskit
 matplotlib
+scikit-image

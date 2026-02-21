@@ -1,4 +1,5 @@
 from PIL import Image, ImageOps
+from skimage.filters import threshold_otsu
 import numpy as np
 from quantum_processing import quantum_kernel
 
@@ -105,7 +106,5 @@ def quantum_sobel(grey_image, side_length):
     if max_val > min_val:
         convolved = (convolved - min_val) / (max_val - min_val) * 255.0
 
-    threshold = 128  
-    binary = np.where(convolved > threshold, 255, 0).astype(np.uint8)
-    return binary
-
+    threshold = threshold_otsu(convolved)
+    return np.where(convolved > threshold, 255, 0).astype(np.uint8)

@@ -16,6 +16,8 @@ def quantum_kernel(patch, coefficients):
     # Encode each pixel like its a sobel kernel
     
     for i, pixel in enumerate(patch.flatten()):
+        if coefficients[i] < 0:
+            qml.PauliX(wires=i)
         qml.RY((pixel * np.pi)*coefficients[i], wires=i) # if its a 1 it rotates by pi
     
     # Entangling the qubits
