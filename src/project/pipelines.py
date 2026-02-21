@@ -29,7 +29,7 @@ def test_full_image(x_convolved, y_convolved, grey_normalized, side_length):
 
     results = test_pixel(x_angles, y_angles, greys)
 
-    edge_image = (results > 0.175).astype(int).reshape(grey_normalized.shape)
+    edge_image = (results > 0.173).astype(int).reshape(grey_normalized.shape)
     return edge_image
 
 
